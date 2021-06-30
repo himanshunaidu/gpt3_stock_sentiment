@@ -43,3 +43,18 @@ random.shuffle(temp_train) #Randomize the training set
 
 labels = {'Negative': 0, 'Neutral': 1, 'Positive': 2}
 num_labels = {0: 'Negative', 1: 'Neutral', 2: 'Positive'}
+
+#CREATE MODEL, AND ADD TRAINING DATA
+
+# Reading the API key from a file
+service_key = config.api_key
+openai.api_key = service_key
+
+gpt = GPT(engine="davinci", temperature=0.5, max_tokens=3)
+# gpt.add_example(Example('''According to Gran , the company has no plans to
+# move all production to Russia , although that is
+# where the company is growing ''', 'Neutral'))
+for t in temp_train:
+    gpt.add_example(Example(t[0], num_labels[t[1]]))
+
+# print(gpt.get_all_examples())
