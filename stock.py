@@ -36,7 +36,7 @@ for i in range(0, 3):
             count = count+1
         index = index+1
 X_train2 = np.array(X_train2)
-print(X_train2.shape)
+# print(X_train2)
 
 temp_train = list(zip(X_train2, y_train2))
 random.shuffle(temp_train) #Randomize the training set
