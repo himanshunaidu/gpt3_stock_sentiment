@@ -11,7 +11,7 @@ from gpt3 import GPT
 from gpt3 import Example
 
 # import config
-from sample_config import api_key, train_size_per_class
+from sample_config import api_key, train_size_per_class, test_size
 
 from datasets import load_dataset
 
@@ -58,3 +58,27 @@ for t in temp_train:
     gpt.add_example(Example(t[0], num_labels[t[1]]))
 
 # print(gpt.get_all_examples())
+
+#TEST MODEL
+
+accuracy, total = 0, 0
+f = open("testing.txt", "at")
+for index in range(0, test_size):
+    total = total+1
+    # print(y_test[index])
+    # print(len(X_test[index]))
+    prompt = X_test[index]
+    output = gpt.submit_request(prompt)
+    test_label = output.choices[0].text
+    print(test_label, y_test[index])
+    f.write(prompt+ ': '+ str(y_test[index])+ 'vs'+ test_label.replace('output: ', '').strip()+'\n')
+    try:
+        if labels[test_label.replace('output: ', '').strip()]==y_test[index]:
+            print('Accurate for', y_test[index])
+            accuracy = accuracy+1
+    except:
+        print('Error')
+        pass
+f.close()
+
+print(accuracy*100/total)
